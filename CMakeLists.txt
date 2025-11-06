@@ -19,6 +19,7 @@ option(BUILD_DOC "Build documentation" ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 add_subdirectory(cmake)
+add_subdirectory(ByteSet)
 
 add_subdirectory(src)
 

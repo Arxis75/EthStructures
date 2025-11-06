@@ -1,4 +1,4 @@
-#include <ByteSet/EthComposite.h>
+#include <EthStructures/EthComposite.h>
 #include <trie.h>
 
 #include <iostream>
