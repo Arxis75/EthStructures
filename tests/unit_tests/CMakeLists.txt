@@ -1,5 +1,5 @@
 file(GLOB SOURCES "*.h" "*.cpp")
 
-target_sources(ByteSetTest PUBLIC ${SOURCES})
+target_sources(EthStructuresTest PUBLIC ${SOURCES})
 
 add_subdirectory(constructors)

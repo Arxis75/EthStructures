@@ -1,0 +1,3 @@
+[submodule "ByteSet"]
+	path = ByteSet
+	url = https://github.com/Arxis75/ByteSet.git
