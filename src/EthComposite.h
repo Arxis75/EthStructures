@@ -8,71 +8,70 @@ class EthContainer : public ByteSetComposite {
     public:
         virtual ~EthContainer() = default;
 
-        virtual const ByteSet<BYTE> RLPserialize() const override;
+        virtual void RLPparse(ByteSet<BYTE> &b) override = 0;
 
-        virtual void buildStructure(uint64_t type = 0) = 0;
         template<typename T>
-            void buildItem(uint64_t index, uint64_t type = 0);
+            void parseItem(ByteSet<BYTE> &b);
         template<typename T>
-            void buildAllItems(bool typed = false);
-        template<typename T>
-            inline const T* get(uint64_t index) const { return (index < m_items.size() ? dynamic_cast<const T*>(m_items[index].get()) : nullptr); }
+            inline void parseAllItems(ByteSet<BYTE> &b) { while(b.byteSize()) parseItem<T>(b); }
 
-        void DumpFields() const;
-
-        inline uint64_t getType() const { return m_type; }
+        template<typename T>
+            inline const T* get(uint64_t index) const { return (index < getChildrenCount() ? dynamic_cast<const T*>(getChildAt(index)) : nullptr); }
     
     protected:
         EthContainer() = default;
-        inline void setType(uint64_t type) { m_type = type; }
-
-    protected:
-        unique_arr<unique_ptr<IByteSetContainer>> m_items;
-        int64_t m_type;
 };
-struct BlockField : public ByteSetField {
-    inline virtual void buildStructure(uint64_t) {}
+class EthTypedContainer : public EthContainer {
+    public:
+        virtual ~EthTypedContainer() = default;
+
+        virtual const ByteSet<BYTE> RLPserialize() const override;
+
+        inline uint64_t getType() const { return m_type; }
+        inline void setType(uint64_t type) { m_type = type; }
+    
+    protected:
+        EthTypedContainer() = default;
+
+    private:
+        int64_t m_type;
 };
 
 struct BlockHeader : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockField>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<ByteSetField>(b); }
 };
 struct BlockAuthorization : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockField>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<ByteSetField>(b); }
 };
 struct BlockAuthorizationList : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockAuthorization>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<BlockAuthorization>(b); }
 };
 struct BlockBlobVersionHashes : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockField>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<ByteSetField>(b); }
 };
 struct BlockStorageKeys : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockField>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<ByteSetField>(b); }
 };
 struct BlockAccessList : public EthContainer {
-    virtual void buildStructure(uint64_t) override {
-        buildItem<BlockField>(0);
-        buildItem<BlockStorageKeys>(1);
-        deleteChildren();
-    }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseItem<ByteSetField>(b); parseItem<BlockStorageKeys>(b); }
 };
 struct BlockAccessLists : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockAccessList>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<BlockAccessList>(b); }
 };
-struct BlockTransaction : public EthContainer {
-    virtual void buildStructure(uint64_t) override;
+struct BlockTransaction : public EthTypedContainer {
+    virtual void RLPparse(ByteSet<BYTE> &b) override;
 };
 struct BlockTransactions : public EthContainer { 
-     virtual void buildStructure(uint64_t) override { buildAllItems<BlockTransaction>(true); }
+     virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<BlockTransaction>(b); }
 };
 struct BlockUncles : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockHeader>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<BlockHeader>(b); }
 };
 struct BlockWithdrawal : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockField>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<ByteSetField>(b); }
 };
 struct BlockWithdrawals : public EthContainer {
-    virtual void buildStructure(uint64_t) override { buildAllItems<BlockWithdrawal>(); }
+    virtual void RLPparse(ByteSet<BYTE> &b) override { parseAllItems<BlockWithdrawal>(b); }
 };
 
 class Block : public EthContainer {
@@ -80,7 +79,7 @@ class Block : public EthContainer {
         Block() : EthContainer(), m_block_height(-1) {}
         virtual ~Block() = default;
       
-        virtual void buildStructure(uint64_t type = 0) override;
+        virtual void RLPparse(ByteSet<BYTE> &b) override;
 
         const BlockHeader* getHeader() const { return get<const BlockHeader>(0); }
         const BlockTransactions* getTransactions() const { return get<const BlockTransactions>(1); }
@@ -113,6 +112,6 @@ using Transaction = const BlockTransaction;
 using Uncles = const BlockUncles;
 using Withdrawals = const BlockWithdrawals;
 using Withdrawal = const BlockWithdrawal;
-using Field = const BlockField;
+using Field = const ByteSetField;
 
 #include <EthComposite.tpp>

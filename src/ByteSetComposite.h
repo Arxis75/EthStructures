@@ -35,14 +35,15 @@ class ByteSetComposite : public virtual IByteSetContainer
         virtual ~ByteSetComposite() = default;
 
         virtual void RLPparse(ByteSet<BYTE> &b) override;
-        uint64_t RLPparseTypedChildAt(uint64_t child_index);
+        //uint64_t RLPparseTypedChildAt(uint64_t child_index);
         virtual const ByteSet<BYTE> RLPserialize() const override;
         inline virtual void push_back(const IByteSetContainer *f) override { m_children.emplace_back(f); }
 
         IByteSetContainer* newChild(bool is_composite);
         inline const IByteSetContainer* getChildAt(uint64_t index) const { return (index < m_children.size() ? m_children[index].get() : nullptr); }
-        inline unique_ptr<const IByteSetContainer> takeChildAt(uint64_t index) { return (index < m_children.size() ? std::move(m_children[index]) : nullptr); }
-        void moveChildAt_To(uint64_t child_index, unique_ptr<IByteSetContainer>& target);           //the call does not move ownership of target
+        /*inline unique_ptr<const IByteSetContainer> takeChildAt(uint64_t index) { return (index < m_children.size() ? std::move(m_children[index]) : nullptr); }
+        void moveChildAt_To(uint64_t child_index, unique_ptr<IByteSetContainer>& target);           //the call does not move ownership of target*/
+        
         inline uint64_t getChildrenCount() const { return m_children.size(); }
         void DumpChildren() const;
         void deleteChildren();
@@ -65,7 +66,7 @@ class ByteSetField : public virtual IByteSetContainer {
         
         inline virtual void RLPparse(ByteSet<BYTE> &b) override { m_value = make_unique<ByteSet<BYTE>>(b); }
         inline virtual const ByteSet<BYTE> RLPserialize() const override { return m_value->RLPserialize(false); } //by copy
-        virtual void push_back(const IByteSetContainer *b) override;
+        virtual void push_back(const IByteSetContainer *b) override { assert(false); }
 
         inline const ByteSet<BYTE>& getValue() const { return *m_value.get(); }
         inline const Integer getIntValue() const { return m_value->getNbElements() ? m_value->asInteger() : Integer::zero; }

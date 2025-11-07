@@ -50,13 +50,11 @@ const ByteSet<BYTE> ByteSetComposite::RLPserialize() const
         if(m_children[i])
             rlp.push_back(m_children[i]->RLPserialize());
     }
-
-    if (typeid(*this) == typeid(ByteSetComposite))  //Avoid serializing the concrete caller
-        rlp =  rlp.RLPserialize(true);
+    rlp =  rlp.RLPserialize(true);
     return rlp;
 }
 
-void ByteSetComposite::moveChildAt_To(uint64_t child_index, unique_ptr<IByteSetContainer>& target) {
+/*void ByteSetComposite::moveChildAt_To(uint64_t child_index, unique_ptr<IByteSetContainer>& target) {
     assert(target);
     if(auto uptr = takeChildAt(child_index); uptr) {
         assert(uptr->isComposite() == target->isComposite());
@@ -78,7 +76,7 @@ uint64_t ByteSetComposite::RLPparseTypedChildAt(uint64_t child_index) {
             delete typed_composite;
     }
     return type;
-}
+}*/
 
 void ByteSetComposite::DumpChildren() const
 {
@@ -102,9 +100,9 @@ void ByteSetComposite::DumpChildren() const
     cout << endl;
 }
 
-void ByteSetField::push_back(const IByteSetContainer *b)
+/*void ByteSetField::push_back(const IByteSetContainer *b)
 {
     if(auto f = dynamic_cast<const ByteSetField*>(b); f)
         if(auto v = const_cast<ByteSetField*>(f)->takeValue(); v)
             m_value.reset(v.release());
-}
+}*/
