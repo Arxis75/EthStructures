@@ -20,6 +20,9 @@ class IByteSetContainer
         const ByteSetComposite* getParent() const { return m_parent; }
         void setParent(const ByteSetComposite* p) { m_parent = p; }
 
+        inline virtual uint64_t getType() const { return 0; };
+        inline virtual void setType(uint64_t type) {}
+
     protected:
         IByteSetContainer() = default;
 
@@ -34,15 +37,15 @@ class ByteSetComposite : public virtual IByteSetContainer
         ByteSetComposite& operator=(const ByteSetComposite&) = delete;
         virtual ~ByteSetComposite() = default;
 
-        virtual void RLPparse(ByteSet<BYTE> &b) override;
-        //uint64_t RLPparseTypedChildAt(uint64_t child_index);
         virtual const ByteSet<BYTE> RLPserialize() const override;
         inline virtual void push_back(const IByteSetContainer *f) override { m_children.emplace_back(f); }
 
-        IByteSetContainer* newChild(bool is_composite);
-        inline const IByteSetContainer* getChildAt(uint64_t index) const { return (index < m_children.size() ? m_children[index].get() : nullptr); }
-        /*inline unique_ptr<const IByteSetContainer> takeChildAt(uint64_t index) { return (index < m_children.size() ? std::move(m_children[index]) : nullptr); }
-        void moveChildAt_To(uint64_t child_index, unique_ptr<IByteSetContainer>& target);           //the call does not move ownership of target*/
+        template<typename T>
+            void create(ByteSet<BYTE> &b);
+        template<typename T>
+            inline void createAll(ByteSet<BYTE> &b) { while(b.byteSize()) create<T>(b); }
+        template<typename T>
+           inline const T* get(uint64_t index) const { return (index < m_children.size() ? dynamic_cast<const T*>(m_children[index].get()) : nullptr); }
         
         inline uint64_t getChildrenCount() const { return m_children.size(); }
         void DumpChildren() const;
@@ -55,6 +58,22 @@ class ByteSetComposite : public virtual IByteSetContainer
 
     private:
         vector<unique_ptr<const IByteSetContainer>> m_children;
+};
+
+class TypedByteSetComposite : public ByteSetComposite {
+    public:
+        virtual ~TypedByteSetComposite() = default;
+
+        virtual const ByteSet<BYTE> RLPserialize() const override;
+
+        inline virtual uint64_t getType() const override { return m_type; }
+        inline virtual void setType(uint64_t type) override { m_type = type; }
+    
+    protected:
+        TypedByteSetComposite() = default;
+
+    private:
+        int64_t m_type;
 };
 
 //----------------------------------------------- LEAF ---------------------------------------------------
