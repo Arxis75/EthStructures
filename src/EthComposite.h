@@ -1,14 +1,14 @@
 #pragma once
 
-#include <ByteSet/ByteSetComposite.h>
-#include <ByteSet/Tools.h>
+#include <ByteSetComposite.h>
+#include <Tools.h>
 #include <map>
 
 class EthContainer : public ByteSetComposite {
     public:
         virtual ~EthContainer() = default;
 
-        virtual const ByteSet<8> RLPserialize() const override;
+        virtual const ByteSet<BYTE> RLPserialize() const override;
 
         virtual void buildStructure(uint64_t type = 0) = 0;
         template<typename T>
@@ -100,7 +100,7 @@ class BlockChain {
     public:
         BlockChain() = default;
 
-        const Block* newBlockFromRawRLP(ByteSet<8> &b);
+        const Block* newBlockFromRawRLP(ByteSet<BYTE> &b);
         inline const Block* getBlock(uint64_t block_height) const { return m_blocks.find(block_height)->second.get(); };
 
     private:

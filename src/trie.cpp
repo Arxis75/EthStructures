@@ -1,11 +1,12 @@
 #include <trie.h>
+#include <Tools.h>
 
 TrieNode::TrieNode()
     : m_children{nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr}
     , m_value()
 { }
 
-void TrieNode::update(const ByteSet<4> &key, const ByteSet<> &value) {
+void TrieNode::update(const ByteSet<NIBBLE> &key, const ByteSet<> &value) {
     if(key.getNbElements()) {
         if(!m_children[key[0]])
             m_children[key[0]] = new TrieNode();
@@ -15,14 +16,14 @@ void TrieNode::update(const ByteSet<4> &key, const ByteSet<> &value) {
         m_value = value;
 }
 
-const TrieNode* TrieNode::lookup(const ByteSet<4> &key) const {
+const TrieNode* TrieNode::lookup(const ByteSet<NIBBLE> &key) const {
     if(key.getNbElements() && m_children[key[0]])
         return m_children[key[0]]->lookup(key.at(1, key.getNbElements() - 1));
     else
         return this;
 }
 
-void TrieNode::del(const ByteSet<4> &key) {
+void TrieNode::del(const ByteSet<NIBBLE> &key) {
     vector<std::pair<TrieNode*, uint8_t>> parents;
     TrieNode* target = this;
     if(key.getNbElements())
@@ -61,13 +62,13 @@ void TrieNode::del(const ByteSet<4> &key) {
 
 //----------------------------------------------------------------------------------------------------------------
 
-const CompressedTrieNode* CompressedTrieNode::lookup(const ByteSet<4> &key) const {
+const CompressedTrieNode* CompressedTrieNode::lookup(const ByteSet<NIBBLE> &key) const {
     return this;
 }
 
-void CompressedTrieNode::update(const ByteSet<4> &key, const ByteSet<> &value) {
+void CompressedTrieNode::update(const ByteSet<NIBBLE> &key, const ByteSet<> &value) {
 }
 
-void CompressedTrieNode::del(const ByteSet<4> &key) {
+void CompressedTrieNode::del(const ByteSet<NIBBLE> &key) {
 
 }

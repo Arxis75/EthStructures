@@ -1,4 +1,4 @@
-#include <ByteSet/EthComposite.h>
+#include <EthComposite.h>
 #include <System.h>
 
 template<typename T>
@@ -27,8 +27,8 @@ void EthContainer::buildAllItems(bool typed) {
     }
 }
 
-const ByteSet<8> EthContainer::RLPserialize() const {
-    ByteSet<8> rlp;
+const ByteSet<BYTE> EthContainer::RLPserialize() const {
+    ByteSet<BYTE> rlp;
     for(uint64_t i=0; i<m_items.size(); i++) {
         if(m_items[i]) {
             rlp.push_back(m_items[i]->RLPserialize());
@@ -37,7 +37,7 @@ const ByteSet<8> EthContainer::RLPserialize() const {
     
     rlp = rlp.RLPserialize(true);               
     if(getType()) {
-        rlp.push_front(ByteSet<8>(getType()));
+        rlp.push_front(ByteSet<BYTE>(getType()));
         rlp = rlp.RLPserialize(false);
     }
     return rlp;
@@ -65,7 +65,7 @@ void EthContainer::DumpFields() const
     cout << endl;
 }
 
-const Block* BlockChain::newBlockFromRawRLP(ByteSet<8> &b) {
+const Block* BlockChain::newBlockFromRawRLP(ByteSet<BYTE> &b) {
     auto block = make_unique<Block>();
     block->RLPparse(b);
     block->buildStructure();

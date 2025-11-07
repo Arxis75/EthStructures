@@ -5,9 +5,9 @@ class TrieNode {
     public:
         TrieNode();
 
-        virtual void update(const ByteSet<4> &key, const ByteSet<> &value);
-        virtual const TrieNode* lookup(const ByteSet<4> &key) const;
-        virtual void del(const ByteSet<4> &key);
+        virtual void update(const ByteSet<NIBBLE> &key, const ByteSet<> &value);
+        virtual const TrieNode* lookup(const ByteSet<NIBBLE> &key) const;
+        virtual void del(const ByteSet<NIBBLE> &key);
         virtual void iterate() const {}     //TODO
 
         inline const ByteSet<>& getValue() const { return m_value; }
@@ -28,9 +28,9 @@ class CompressedTrieNode
     public:
         CompressedTrieNode() = default;
 
-        virtual void update(const ByteSet<4> &key, const ByteSet<> &value);
-        virtual const CompressedTrieNode* lookup(const ByteSet<4> &key) const;
-        virtual void del(const ByteSet<4> &key);
+        virtual void update(const ByteSet<NIBBLE> &key, const ByteSet<> &value);
+        virtual const CompressedTrieNode* lookup(const ByteSet<NIBBLE> &key) const;
+        virtual void del(const ByteSet<NIBBLE> &key);
         virtual void iterate() const {}     //TODO
 
     private:

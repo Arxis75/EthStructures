@@ -1,4 +1,4 @@
-#include <ByteSet/ByteSetComposite.h>
+#include <ByteSetComposite.h>
 #include <System.h>
 
 IByteSetContainer* ByteSetComposite::newChild(bool is_composite) {
@@ -33,7 +33,7 @@ void ByteSetComposite::deleteChildren() {
     }
 }
 
-void ByteSetComposite::RLPparse(ByteSet<8> &b)
+void ByteSetComposite::RLPparse(ByteSet<BYTE> &b)
 {
     while(b.byteSize()) {
         ByteSet payload = b.RLPparse();
@@ -43,9 +43,9 @@ void ByteSetComposite::RLPparse(ByteSet<8> &b)
     }
 }
 
-const ByteSet<8> ByteSetComposite::RLPserialize() const
+const ByteSet<BYTE> ByteSetComposite::RLPserialize() const
 {
-    ByteSet<8> rlp;
+    ByteSet<BYTE> rlp;
     for(uint64_t i=0; i<m_children.size(); i++) {
         if(m_children[i])
             rlp.push_back(m_children[i]->RLPserialize());
@@ -69,7 +69,7 @@ uint64_t ByteSetComposite::RLPparseTypedChildAt(uint64_t child_index) {
     if(auto f = dynamic_cast<const ByteSetField*>(getChildAt(child_index)); f) {
         ByteSetComposite* typed_composite = new ByteSetComposite;;
         typed_composite->setParent(f->getParent());
-        ByteSet<8> typed_child = f->getValue();
+        ByteSet<BYTE> typed_child = f->getValue();
         type = typed_child.pop_front_elem();  //assume here type = 8 bits
         typed_composite->RLPparse(typed_child);
         if(auto ptr = dynamic_cast<const ByteSetComposite*>(typed_composite->getChildAt(0)); ptr)
