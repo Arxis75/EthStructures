@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ByteSetComposite.h>
+#include <ByteSet/ByteSetComposite.h>
 #include <Tools.h>
 #include <map>
 
