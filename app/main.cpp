@@ -1,4 +1,6 @@
 #include <EthComposite.h>
+#include <curl/curl.h>
+#include <nlohmann/json.hpp>
 
 int main(int argc, char *argv[])
 {
@@ -24,4 +26,11 @@ int main(int argc, char *argv[])
     cout << "final = " << hex << block_rlp2.asString() << endl;
     if(block_rlp2 == block_rlp)
         cout << "Yipee!!!" << endl;
+
+    auto header_uncles_hash = h->get<Field>(1)->getValue();
+    auto calculated_uncles_hash = b->getUncles()->RLPserialize().keccak256();
+    if(header_uncles_hash == calculated_uncles_hash)
+        cout << "Yipee!!!" << endl;
+
+    return 0;
 }
