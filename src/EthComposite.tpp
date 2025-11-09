@@ -10,16 +10,14 @@ const Block* BlockChain::newBlockFromRawRLP(ByteSet<BYTE> &b) {
     return result;
 } 
 
-void Block::RLPparse(ByteSet<BYTE> &b) {
-        create<BlockHeader>(b);
-        create<BlockTransactions>(b);
-        create<BlockUncles>(b);
-        if(b.byteSize())
-            create<BlockWithdrawals>(b);
-
-        if(auto h = getHeader(); h)
-            if(auto f = h->get<ByteSetField>(8); f)
-                setHeight(f->getValue().asInteger());
+void Block::RLPparse(ByteSet<BYTE> &b) {   
+    create<BlockHeader>(b);
+    if(auto h = getHeader(); h)
+        if(auto f = h->get<ByteSetField>(8); f)
+            setHeight(f->getValue().asInteger());
+    create<BlockTransactions>(b);
+    create<BlockUncles>(b);
+    create<BlockWithdrawals>(b);
 }
 
 void BlockTransaction::RLPparse(ByteSet<BYTE> &b)

@@ -1,4 +1,5 @@
 #include <EthComposite.h>
+#include <ByteSet/ByteSetMPT.h>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
@@ -31,6 +32,16 @@ int main(int argc, char *argv[])
     auto calculated_uncles_hash = b->getUncles()->RLPserialize().keccak256();
     if(header_uncles_hash == calculated_uncles_hash)
         cout << "Yipee!!!" << endl;
+
+    BlockTransactionsTrie btt;
+    for(uint i=0;i<b->getTransactions()->getChildrenCount();i++) {
+        ByteSet<NIBBLE> key(i);
+        key.setRLPType(RLPType::INT);
+        btt.store(key.RLPserialize(false), b->getTransactions()->get<Transaction>(i)->RLPserialize());
+        cout << "------------------------------- Transaction " << i << "------------------------------------" << endl;
+        btt.DumpChildren();
+    }
+
 
     return 0;
 }
