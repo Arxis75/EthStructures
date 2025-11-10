@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ByteSet/ByteSetComposite.h>
-#include <Tools.h>
 #include <map>
 
 struct BlockHeader : public ByteSetComposite {
@@ -81,4 +80,4 @@ using Withdrawals = const BlockWithdrawals;
 using Withdrawal = const BlockWithdrawal;
 using Field = const ByteSetField;
 
-#include <EthComposite.tpp>
+#include <EthStructures/EthComposite.tpp>

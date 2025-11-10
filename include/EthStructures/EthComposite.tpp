@@ -1,5 +1,6 @@
-#include <EthComposite.h>
-#include <System.h>
+#include <EthStructures/EthComposite.h>
+
+using std::make_unique;
 
 const Block* BlockChain::newBlockFromRawRLP(ByteSet<BYTE> &b) {
     ByteSet payload = b.RLPparse();         //Removes the top brackets
@@ -30,7 +31,6 @@ void BlockTransaction::RLPparse(ByteSet<BYTE> &b)
             for(uint i = 8; i < 11; i++) create<ByteSetField>(b);
             break;
         case 2: //EIP-1559 (12 fields)
-            cout << b.asString() << endl;
             //chain_id, nonce, max_priority_fee_per_gas, max_fee_per_gas, gas_limit, destination, amount, data, access_list, signature_y_parity, signature_r, signature_s
             for(uint i = 0; i < 8; i++) create<ByteSetField>(b);
             create<BlockAccessLists>(b);
