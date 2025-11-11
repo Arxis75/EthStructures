@@ -53,8 +53,9 @@ int main(int argc, char *argv[])
     for(uint i=0;i<Txs.getChildrenCount();i++) {
         ByteSet<NIBBLE> key(i);
         key.setRLPType(RLPType::INT);
+        key = key.RLPSerialize(false);
         cout << "------------------------------- Transaction " << i << "------------------------------------" << endl;
-        btt.store(key.RLPSerialize(false), Txs.get<Transaction>(i)->RLPSerialize());
+        btt.store(key, Txs.get<Transaction>(i)->RLPSerialize());
         btt.DumpChildren();
     }
 
