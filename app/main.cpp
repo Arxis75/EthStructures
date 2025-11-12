@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
         key = key.RLPSerialize(false);
         cout << "------------------------------- Transaction " << i << "------------------------------------" << endl;
         btt.store(key, Txs.get<Transaction>(i)->RLPSerialize());
-        btt.DumpChildren();
+        btt.dumpChildren();
     }
 
     cout << hex << btt.hash().asString() << endl;
