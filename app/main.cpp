@@ -1,5 +1,5 @@
 #include <EthStructures/EthComposite.h>
-#include <ByteSet/ByteSetTrie.h>
+#include <ByteSet/TrieNode.h>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
