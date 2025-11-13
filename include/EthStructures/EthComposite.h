@@ -24,7 +24,15 @@ struct BlockAccessList : public ByteSetComposite {
 struct BlockAccessLists : public ByteSetComposite {
     virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<BlockAccessList>(b); }
 };
-struct BlockTransaction : public TypedByteSetComposite {
+struct BlockTransaction : public TypedByteSetComposite, virtual public ITrieable {
+    BlockTransaction() = default;
+    BlockTransaction(BlockTransaction&&) noexcept = default;
+    BlockTransaction& operator=(BlockTransaction&&) noexcept = default;
+    //****************************** ITrieable Interface *******************************
+    inline virtual bool isEmpty() const override{ return getChildrenCount() == 0; };
+    inline virtual void clear() override { TypedByteSetComposite::clear(); }
+    inline virtual ByteSet<BYTE> serialize() const override { return RLPSerialize(); };
+    //**********************************************************************************
     virtual void RLPparse(ByteSet<BYTE> &b) override;
 };
 struct BlockTransactions : public ByteSetComposite { 
