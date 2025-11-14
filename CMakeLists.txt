@@ -14,8 +14,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # first we can indicate the documentation build as an option and set it to ON by default
 option(BUILD_DOC "Build documentation" ON)
-set(DOXYGEN_INPUT "${PROJECT_SOURCE_DIR}")
-set(DOXYGEN_RECURSIVE YES)
 
 # Where custom modules live
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
