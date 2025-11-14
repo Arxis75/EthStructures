@@ -18,23 +18,23 @@ int main(int argc, char *argv[])
 
     auto h = b->getHeader();
     auto f = h->get<Field>(0);
-    cout << f->getValue() << endl;
+    cout << f->asString() << endl;
 
     auto ws = b->getWithdrawals();
     auto w = ws->get<Withdrawal>(15);
     auto v = w->get<Field>(0);
-    cout << v->getValue() << endl;
+    cout << v->asString() << endl;
 
-    ByteSet block_rlp2 = b->RLPSerialize();
+    ByteSet block_rlp2 = b->serialize();
     
     cout << "initial = " << hex << block_rlp.asString() << endl;
     cout << "final = " << hex << block_rlp2.asString() << endl;
     if(block_rlp2 == block_rlp)
         cout << "Yipee!!!" << endl;
 
-    auto header_uncles_hash = h->get<Field>(1)->getValue();
-    auto calculated_uncles_hash = b->getUncles()->RLPSerialize().keccak256();
-    if(header_uncles_hash == calculated_uncles_hash)
+    auto header_uncles_hash = h->get<Field>(1);
+    auto calculated_uncles_hash = b->getUncles()->serialize().keccak256();
+    if(*header_uncles_hash == calculated_uncles_hash)
         cout << "Yipee!!!" << endl;
 
     BlockTransactions Txs;

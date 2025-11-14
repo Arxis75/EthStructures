@@ -9,11 +9,11 @@ TEST(Test_EthComposite, hoodi_block_1547723)
 
     BlockChain bl;
     auto b = bl.newBlockFromRawRLP(block_rlp1);
-    ByteSet block_rlp2 = b->RLPSerialize();   
+    ByteSet block_rlp2 = b->serialize();
     ASSERT_EQ(block_rlp2, block_rlp);
 
     auto h = b->getHeader();
-    auto header_uncles_hash = h->get<Field>(1)->getValue();
-    auto calculated_uncles_hash = b->getUncles()->RLPSerialize().keccak256();
-    ASSERT_EQ(header_uncles_hash, calculated_uncles_hash);
+    auto header_uncles_hash = h->get<Field>(1);
+    auto calculated_uncles_hash = b->getUncles()->serialize().keccak256();
+    ASSERT_EQ(*header_uncles_hash, calculated_uncles_hash);
 }
