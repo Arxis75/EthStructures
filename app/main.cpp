@@ -49,14 +49,14 @@ int main(int argc, char *argv[])
 
     cout << "0xab41f886be23cd786d8a69a72b0f988ea72e0b2e03970d0798f5e03763a442cc" << endl;
 
-    BlockTransactionsTrie<BlockTransaction> btt;
+    SecureTrieNode<BlockTransaction> btt;
     for(uint i=0;i<Txs.getChildrenCount();i++) {
         ByteSet<NIBBLE> key(i);
         key.setRLPType(RLPType::INT);
         key = key.RLPSerialize(false);
         cout << "------------------------------- Transaction " << i << "------------------------------------" << endl;
         btt.store(key, *const_cast<BlockTransaction*>(Txs.get<Transaction>(i)));
-        btt.dumpChildren();
+        btt.printChildren();
     }
 
     cout << hex << btt.hash().asString() << endl;

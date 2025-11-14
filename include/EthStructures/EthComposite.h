@@ -1,53 +1,53 @@
 #pragma once
 
-#include <ByteSet/ByteSetComposite.h>
+#include <ByteSet/Composite.h>
 #include <map>
 
-struct BlockHeader : public ByteSetComposite {
-    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<ByteSetField>(b); }
+struct BlockHeader : public RLPListComposite {
+    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<RLPListField>(b); }
 };
-struct BlockAuthorization : public ByteSetComposite {
-    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<ByteSetField>(b); }
+struct BlockAuthorization : public RLPListComposite {
+    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<RLPListField>(b); }
 };
-struct BlockAuthorizationList : public ByteSetComposite {
+struct BlockAuthorizationList : public RLPListComposite {
     virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<BlockAuthorization>(b); }
 };
-struct BlockBlobVersionHashes : public ByteSetComposite {
-    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<ByteSetField>(b); }
+struct BlockBlobVersionHashes : public RLPListComposite {
+    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<RLPListField>(b); }
 };
-struct BlockStorageKeys : public ByteSetComposite {
-    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<ByteSetField>(b); }
+struct BlockStorageKeys : public RLPListComposite {
+    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<RLPListField>(b); }
 };
-struct BlockAccessList : public ByteSetComposite {
-    virtual void RLPparse(ByteSet<BYTE> &b) override { create<ByteSetField>(b); create<BlockStorageKeys>(b); }
+struct BlockAccessList : public RLPListComposite {
+    virtual void RLPparse(ByteSet<BYTE> &b) override { create<RLPListField>(b); create<BlockStorageKeys>(b); }
 };
-struct BlockAccessLists : public ByteSetComposite {
+struct BlockAccessLists : public RLPListComposite {
     virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<BlockAccessList>(b); }
 };
-struct BlockTransaction : public TypedByteSetComposite, virtual public ITrieable {
+struct BlockTransaction : public TypedRLPListComposite, virtual public ITrieable {
     //****************************** ITrieable Interface *******************************
     inline virtual bool isEmpty() const override{ return getChildrenCount() == 0; };
-    inline virtual void clear() override { TypedByteSetComposite::reset(); }
+    inline virtual void clear() override { TypedRLPListComposite::reset(); }
     inline virtual ByteSet<BYTE> serialize() const override { return RLPSerialize(); };
     //**********************************************************************************
     virtual void RLPparse(ByteSet<BYTE> &b) override;
 };
-struct BlockTransactions : public ByteSetComposite { 
+struct BlockTransactions : public RLPListComposite { 
      virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<BlockTransaction>(b); }
 };
-struct BlockUncles : public ByteSetComposite {
+struct BlockUncles : public RLPListComposite {
     virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<BlockHeader>(b); }
 };
-struct BlockWithdrawal : public ByteSetComposite {
-    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<ByteSetField>(b); }
+struct BlockWithdrawal : public RLPListComposite {
+    virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<RLPListField>(b); }
 };
-struct BlockWithdrawals : public ByteSetComposite {
+struct BlockWithdrawals : public RLPListComposite {
     virtual void RLPparse(ByteSet<BYTE> &b) override { createAll<BlockWithdrawal>(b); }
 };
 
-class Block : public ByteSetComposite {
+class Block : public RLPListComposite {
     public:
-        Block() : ByteSetComposite(), m_block_height(-1) {}
+        Block() : RLPListComposite(), m_block_height(-1) {}
         virtual ~Block() = default;
       
         virtual void RLPparse(ByteSet<BYTE> &b) override;
@@ -83,6 +83,6 @@ using Transaction = const BlockTransaction;
 using Uncles = const BlockUncles;
 using Withdrawals = const BlockWithdrawals;
 using Withdrawal = const BlockWithdrawal;
-using Field = const ByteSetField;
+using Field = const RLPListField;
 
 #include <EthStructures/EthComposite.tpp>
