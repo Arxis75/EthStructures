@@ -12,7 +12,17 @@ if(NOT TARGET libcurl)
 
         set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build static libcurl")
         set(CURL_USE_OPENSSL ON CACHE BOOL "Use OpenSSL")
+        
         set(CURL_USE_LIBPSL OFF CACHE BOOL "Disable use of libpsl")
+        set(ENABLE_BROTLI OFF CACHE BOOL "" FORCE)
+        set(ENABLE_ZSTD OFF CACHE BOOL "" FORCE)
+        set(ENABLE_NGHTTP2 OFF CACHE BOOL "" FORCE)
+        set(ENABLE_LIBIDN2 OFF CACHE BOOL "" FORCE)
+        set(ENABLE_LIBSSH2 OFF CACHE BOOL "" FORCE)
+        set(ENABLE_LDAP OFF CACHE BOOL "" FORCE)
+        set(ENABLE_RTSP OFF CACHE BOOL "" FORCE)
+        set(ENABLE_MANUAL OFF CACHE BOOL "" FORCE)
+        set(ENABLE_TESTING OFF CACHE BOOL "" FORCE)
 
         include(FetchContent)
         FetchContent_Declare(
