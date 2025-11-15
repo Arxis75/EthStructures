@@ -19,4 +19,4 @@ target_include_directories(libEthStructures
           ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-target_link_libraries(libEthStructures PUBLIC LibByteSet givaro::givaro ethash::keccak PRIVATE OpenSSL::Crypto ${CMAKE_DL_LIBS} nlohmann_json::nlohmann_json libcurl)
+target_link_libraries(libEthStructures PUBLIC LibByteSet)

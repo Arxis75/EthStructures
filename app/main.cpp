@@ -5,7 +5,7 @@
 
 int main(int argc, char *argv[])
 {
-    ByteSet<BYTE> empty;
+    /*ByteSet<BYTE> empty;
     cout << empty.RLPSerialize(false).keccak256().asString() << endl;
     cout << empty.RLPSerialize(true).keccak256().asString() << endl;
     
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         btt.printChildren();
     }
 
-    cout << hex << btt.hash().asString() << endl;
+    cout << hex << btt.hash().asString() << endl;*/
 
     return 0;
 }
