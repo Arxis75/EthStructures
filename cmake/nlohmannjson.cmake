@@ -1,6 +1,7 @@
 set(PREFIX ${CMAKE_SOURCE_DIR}/build-external/nlohmann_json-3.12.0)
 set(INSTALL ${PREFIX})
 
+#The following test avoids the lib rebuilding when it is already available at the project level (parent host building it for example).
 if(NOT TARGET nlohmann_json::nlohmann_json)
     message(STATUS "Third-party: creating target 'nlohmann_json'")
 

@@ -1,8 +1,4 @@
 include(doxygen.cmake)
-include(gmp.cmake)
-include(givaro.cmake)
-include(ethash.cmake)
-include(openssl.cmake)
 include(curl.cmake)
 include(nlohmannjson.cmake)
 include(googletest.cmake)
