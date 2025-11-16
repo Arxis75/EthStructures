@@ -1,4 +1,4 @@
-include(doxygen.cmake)
 include(curl.cmake)
-include(nlohmannjson.cmake)
+include(doxygen.cmake)
 include(googletest.cmake)
+include(nlohmannjson.cmake)
