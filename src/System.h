@@ -1,7 +1,5 @@
 #pragma once 
 
-#include <givaro/modular-integer.h>
-
 /*#include <chrono>
 #include <deque>*/
 #include <string>
@@ -13,9 +11,6 @@
 /*#include <iomanip>
 #include <stdexcept>
 #include <algorithm>*/
-
-#include <ethash/keccak.hpp>
-#include <openssl/sha.h>
 
 using Givaro::Integer;
 
