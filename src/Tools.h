@@ -1,13 +1,8 @@
 #pragma once
 
-#include <givaro/modular-integer.h>
-#include <ethash/keccak.hpp>
-#include <openssl/sha.h>
 #include <sstream>
 #include <vector>
 #include <memory>
-
-using Givaro::Integer;
 
 using std::string;
 using std::stringstream;
