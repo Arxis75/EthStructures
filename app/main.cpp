@@ -1,5 +1,5 @@
-#include <EthStructures/EthComposite.h>
-#include <ByteSet/TrieNode.h>
+//#include <EthStructures/EthComposite.h>
+//#include <ByteSet/TrieNode.h>
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 
     cout << "0xab41f886be23cd786d8a69a72b0f988ea72e0b2e03970d0798f5e03763a442cc" << endl;
 
-    SecureTrieNode<BlockTransaction> btt;
+    TrieRoot<BlockTransaction> btt;
     for(uint i=0;i<Txs.getChildrenCount();i++) {
         ByteSet<NIBBLE> key(i);
         key.setRLPType(RLPType::INT);

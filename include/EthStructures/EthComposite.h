@@ -1,56 +1,58 @@
 #pragma once
 
-#include <ByteSet/Composite.h>
+#include <ByteSet/VectorNode.h>
+#include <ByteSet/TrieNode.h>
 #include <map>
 
-struct BlockHeader : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<ByteSet<BYTE>>(b); }
+struct BlockHeader : public VectorNode {
+    virtual IComponent* newChild(uint = 0) override { return new ByteSet<BYTE>; }
 };
-struct BlockAuthorization : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<ByteSet<BYTE>>(b); }
+struct BlockAuthorization : public VectorNode {
+    virtual IComponent* newChild(uint = 0) override { return new ByteSet<BYTE>; }
 };
-struct BlockAuthorizationList : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<BlockAuthorization>(b); }
+struct BlockAuthorizationList : public VectorNode {
+    virtual IComponent* newChild(uint = 0) override { return new BlockAuthorization; }
 };
-struct BlockBlobVersionHashes : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<ByteSet<BYTE>>(b); }
+struct BlockBlobVersionHashes : public VectorNode {
+    virtual IComponent* newChild(uint = 0) override { return new ByteSet<BYTE>; }
 };
-struct BlockStorageKeys : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<ByteSet<BYTE>>(b); }
+struct BlockStorageKeys : public VectorNode {
+    virtual IComponent* newChild(uint = 0) override { return new ByteSet<BYTE>; }
 };
-struct BlockAccessList : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { create<ByteSet<BYTE>>(b); create<BlockStorageKeys>(b); }
+struct BlockAccessList : public VectorNode {
+    virtual IComponent* newChild(uint creation_index = 0) override;
 };
-struct BlockAccessLists : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<BlockAccessList>(b); }
+struct BlockAccessLists : public VectorNode {
+    virtual IComponent* newChild(uint = 0) override { return new BlockAccessList; }
 };
-struct BlockTransaction : public TypedByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override;
+struct BlockTransaction : public VectorNode {
+    virtual IComponent* newChild(uint creation_index = 0) override;
 };
-struct BlockTransactions : public ByteSetComposite { 
-     virtual void parse(ByteSet<BYTE> &b) override { createAll<BlockTransaction>(b); }
+struct BlockTransactions : public TrieRoot<BlockTransaction> {
+    virtual IComponent* newChild(uint = 0) override { return new BlockTransaction; }
 };
-struct BlockUncles : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<BlockHeader>(b); }
+struct BlockUncles : public VectorNode {
+    virtual IComponent* newChild(uint = 0) override { return new BlockHeader; }
 };
-struct BlockWithdrawal : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<ByteSet<BYTE>>(b); }
+struct BlockWithdrawal : public VectorNode {
+    virtual IComponent* newChild(uint = 0) override { return new ByteSet<BYTE>; }
 };
-struct BlockWithdrawals : public ByteSetComposite {
-    virtual void parse(ByteSet<BYTE> &b) override { createAll<BlockWithdrawal>(b); }
+struct BlockWithdrawals : public TrieRoot<BlockWithdrawal> {
+    virtual IComponent* newChild(uint = 0) override { return new BlockWithdrawal; }
 };
 
-class Block : public ByteSetComposite {
+class Block : public VectorNode {
     public:
-        Block() : ByteSetComposite(), m_block_height(-1) {}
+        Block() : VectorNode(), m_block_height(-1) {}
         virtual ~Block() = default;
       
-        virtual void parse(ByteSet<BYTE> &b) override;
+        virtual IComponent* newChild(uint creation_index = 0) override;
+        void parse(ByteSet<BYTE> &b) override;
 
-        const BlockHeader* getHeader() const { return get<const BlockHeader>(0); }
-        const BlockTransactions* getTransactions() const { return get<const BlockTransactions>(1); }
-        const BlockUncles* getUncles() const { return get<const BlockUncles>(2); }
-        const BlockWithdrawals* getWithdrawals() const { return get<const BlockWithdrawals>(3); }
+        const BlockHeader* getHeader() const { return get<BlockHeader>(0); }
+        //const BlockTransactions* getTransactions() const { return get<const BlockTransactions>(1); }
+        const BlockUncles* getUncles() const { return get<BlockUncles>(2); }
+        //const BlockWithdrawals* getWithdrawals() const { return get<const BlockWithdrawals>(3); }
 
         inline uint64_t getHeight() const { return m_block_height; }
 
@@ -73,11 +75,11 @@ class BlockChain {
 };
 
 using Header = const BlockHeader;
-using Transactions = const BlockTransactions;
-using Transaction = const BlockTransaction;
+/*using Transactions = const BlockTransactions;
+using Transaction = const BlockTransaction;*/
 using Uncles = const BlockUncles;
-using Withdrawals = const BlockWithdrawals;
-using Withdrawal = const BlockWithdrawal;
+/*using Withdrawals = const BlockWithdrawals;
+using Withdrawal = const BlockWithdrawal;*/
 using Field = const ByteSet<BYTE>;
 
 #include <EthStructures/EthComposite.tpp>
