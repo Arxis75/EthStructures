@@ -82,3 +82,7 @@ transactions_signatures.txt
 _*
 *.h_sav
 *.cpp_sav
+
+# clangd cache
+/.cache/
+/.clangd/
