@@ -81,5 +81,3 @@ using Uncles = const BlockUncles;
 /*using Withdrawals = const BlockWithdrawals;
 using Withdrawal = const BlockWithdrawal;*/
 using Field = const ByteSet<BYTE>;
-
-#include <EthStructures/EthComposite.tpp>
