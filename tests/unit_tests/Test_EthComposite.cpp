@@ -9,6 +9,10 @@ TEST(Test_EthComposite, hoodi_block_1547723)
 
     BlockChain bl;
     auto b = bl.newBlockFromRawRLP(block_rlp1);
+    auto Txs = b->getTransactions();
+    cout << Txs->serialize() << endl;
+    auto Tx = Txs->get<Transaction>(1);
+    cout << Txs->serialize() << endl;
     ByteSet block_rlp2 = b->serialize();
     ASSERT_EQ(block_rlp2, block_rlp);
 

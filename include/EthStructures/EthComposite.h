@@ -50,9 +50,9 @@ class Block : public VectorNode {
         void parse(ByteSet<BYTE> &b) override;
 
         const BlockHeader* getHeader() const { return get<BlockHeader>(0); }
-        //const BlockTransactions* getTransactions() const { return get<const BlockTransactions>(1); }
+        const BlockTransactions* getTransactions() const { return get<const BlockTransactions>(1); }
         const BlockUncles* getUncles() const { return get<BlockUncles>(2); }
-        //const BlockWithdrawals* getWithdrawals() const { return get<const BlockWithdrawals>(3); }
+        const BlockWithdrawals* getWithdrawals() const { return get<const BlockWithdrawals>(3); }
 
         inline uint64_t getHeight() const { return m_block_height; }
 
@@ -75,9 +75,9 @@ class BlockChain {
 };
 
 using Header = const BlockHeader;
-/*using Transactions = const BlockTransactions;
-using Transaction = const BlockTransaction;*/
+using Transactions = const BlockTransactions;
+using Transaction = const BlockTransaction;
 using Uncles = const BlockUncles;
-/*using Withdrawals = const BlockWithdrawals;
-using Withdrawal = const BlockWithdrawal;*/
+using Withdrawals = const BlockWithdrawals;
+using Withdrawal = const BlockWithdrawal;
 using Field = const ByteSet<BYTE>;
