@@ -98,6 +98,12 @@ header = [
 
 ---------------------------------------------------------------------------- EXAMPLES ---------------------------------------------------------------------------
 
+curl https://hoodi.infura.io/v3/3d0224e07a8d48e28f825a51b0b25383   -X POST   -H "Content-Type: application/json"   -d '{"jsonrpc": "2.0", "method": "eth_getBlockByNumber", "params": ["0x179DCB", true], "id": 1}'
+
+"transactionsRoot":"0x7459532742aecb6526b9e6a7af8890bdc247dd411df46eabf4156f2ce666b47c"
+
+--------------------------
+
 curl http://127.0.0.1:8545   -X POST   -H "Content-Type: application/json"   -d '{"jsonrpc": "2.0", "method": "debug_getRawBlock", "params": ["1413507"], "id": 1}'
 
 Body of block 1413507:

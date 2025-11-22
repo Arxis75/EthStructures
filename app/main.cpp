@@ -6,22 +6,6 @@
 
 int main(int argc, char *argv[])
 {
-    ByteSet<BYTE> B("0b1111000010100101", Bin), B1;         //<BYTE> =    240/165, <NIBBLE> =    15/00/10/05 
-    ByteSet<NIBBLE> n("0b11111110110111001011", Bin), n1;   //<BYTE> = 15/237/203, <NIBBLE> = 15/14/13/12/11
-    ByteSet<BIT> b("0b11101110010111010", Bin), b1;         //<BYTE> =  1/220/186, <NIBBLE> =  1/13/12/11/10
-
-    B1 = B.as<BYTE>();
-    B1 = n.as<BYTE>();
-    B1 = b.as<BYTE>();
-
-    n1 = B.as<NIBBLE>();
-    n1 = n.as<NIBBLE>();
-    n1 = b.as<NIBBLE>();
-
-    b1 = B.as<BIT>();
-    b1 = n.as<BIT>();
-    b1 = b.as<BIT>();
-
     BlockTransactions Txs;
     const BlockTransaction* Tx1 = new BlockTransaction();
     const BlockTransaction* Tx2 = new BlockTransaction();
@@ -50,7 +34,7 @@ int main(int argc, char *argv[])
     auto v = w->get<Field>(0);
     cout << v->asString() << endl;
 
-    ByteSet block_rlp2 = b->serialize();
+    ByteSet block_rlp2 = b->getValue();
     
     cout << "initial = " << hex << block_rlp.asString() << endl;
     cout << "final = " << hex << block_rlp2.asString() << endl;
@@ -58,7 +42,7 @@ int main(int argc, char *argv[])
         cout << "Yipee!!!" << endl;
 
     auto header_uncles_hash = h->get<Field>(1);
-    auto calculated_uncles_hash = b->getUncles()->serialize().keccak256();
+    auto calculated_uncles_hash = b->getUncles()->getValue().keccak256();
     if(*header_uncles_hash == calculated_uncles_hash)
         cout << "Yipee!!!" << endl;
 
