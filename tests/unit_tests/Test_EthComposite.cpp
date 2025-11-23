@@ -87,8 +87,6 @@ TEST(Test_EthComposite, hoodi_block_1547723)
     ASSERT_EQ(*header_uncles_hash, calculated_uncles_hash);
 
     auto header_txs_root_hash = h->get<Field>(4);
-    //for(uint i=0;i<8;i++)
-    //    cout << b->getTransactions()->get<Transaction>(i)->serialize().asString() << endl;
     auto calculated_Txs_hash = b->getTransactions()->hash();
     ASSERT_EQ(*header_txs_root_hash, calculated_Txs_hash);
 

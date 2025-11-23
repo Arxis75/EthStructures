@@ -54,12 +54,11 @@ IComponent* BlockAccessList::newChild(uint creation_index) {
 
 void BlockTransaction::parse(ByteSet<BYTE> &b) {
     if(!b.hasRLPListHeader()) {
-        b = b.pop_rlp(true);
+        b.pop_rlp(true);
         setTyped(b.pop_rlp()[0]);
     }
-
     IComposite::parse(b);
-    IComposite::print();
+    //IComposite::print();
 }
 
 const ByteSet<BYTE> BlockTransaction::getValue() const {
