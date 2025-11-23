@@ -28,6 +28,7 @@ struct BlockAccessLists : public VectorNode {
 struct BlockTransaction : public VectorNode {
     virtual void parse(ByteSet<BYTE> &b) override;
     virtual IComponent* newChild(uint creation_index = 0) override;
+    virtual const ByteSet<BYTE> getValue() const override ;
     virtual const ByteSet<BYTE> serialize() const override ;
 };
 struct BlockTransactions : public TrieRoot<BlockTransaction> {

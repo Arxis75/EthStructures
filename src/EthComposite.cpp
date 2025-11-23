@@ -3,6 +3,7 @@
 using std::make_unique;
 
 const Block* BlockChain::newBlockFromRawRLP(ByteSet<BYTE> &b) {
+    b = b.parse();         //Removes the top brackets
     auto block = make_unique<Block>();
     block->parse(b);
     auto result= block.get();
@@ -52,9 +53,19 @@ IComponent* BlockAccessList::newChild(uint creation_index) {
 }
 
 void BlockTransaction::parse(ByteSet<BYTE> &b) {
-    if(b[0] < 0x80)
+    /*if(b[0] < 0x80) {
+        //If composite without RLP List header => typed composite
         setTyped(b.pop_front_elem());
+        b = b.parse();
+    }*/
     IComposite::parse(b);
+}
+
+const ByteSet<BYTE> BlockTransaction::getValue() const {
+    ByteSet<BYTE> result =  IComposite::getValue();
+    if(getTyped())
+        result.push_front_elem(getTyped());
+    return result;
 }
 
 const ByteSet<BYTE> BlockTransaction::serialize() const {
