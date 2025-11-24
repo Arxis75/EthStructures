@@ -3,7 +3,6 @@
 using std::make_unique;
 
 const Block* BlockChain::newBlockFromRawRLP(RLPByteSet<BYTE> &b) {
-    //b = b.parse();         //Removes the top brackets
     auto block = make_unique<Block>();
     block->parse(b);
     auto result= block.get();
