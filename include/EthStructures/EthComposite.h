@@ -26,10 +26,10 @@ struct BlockAccessLists : public VectorNode {
     virtual IComponent* newChild(uint = 0) override { return new BlockAccessList; }
 };
 struct BlockTransaction : public VectorNode {
-    virtual void parse(ByteSet<BYTE> &b) override;
+    virtual void parse(RLPByteSet<BYTE> &b) override;
     virtual IComponent* newChild(uint creation_index = 0) override;
     virtual const ByteSet<BYTE> getValue() const override ;
-    virtual const ByteSet<BYTE> serialize() const override ;
+    virtual const RLPByteSet<BYTE> serialize() const override ;
 };
 struct BlockTransactions : public TrieRoot<BlockTransaction> {
     virtual IComponent* newChild(uint = 0) override { return new BlockTransaction; }
@@ -50,7 +50,7 @@ class Block : public VectorNode {
         virtual ~Block() = default;
       
         virtual IComponent* newChild(uint creation_index = 0) override;
-        void parse(ByteSet<BYTE> &b) override;
+        void parse(RLPByteSet<BYTE> &b) override;
 
         const BlockHeader* getHeader() const { return get<BlockHeader>(0); }
         const BlockTransactions* getTransactions() const { return get<const BlockTransactions>(1); }
@@ -70,7 +70,7 @@ class BlockChain {
     public:
         BlockChain() = default;
 
-        const Block* newBlockFromRawRLP(ByteSet<BYTE> &b);
+        const Block* newBlockFromRawRLP(RLPByteSet<BYTE> &b);
         inline const Block* getBlock(uint64_t block_height) const { return m_blocks.find(block_height)->second.get(); };
 
     private:

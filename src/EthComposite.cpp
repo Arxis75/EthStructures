@@ -2,7 +2,7 @@
 
 using std::make_unique;
 
-const Block* BlockChain::newBlockFromRawRLP(ByteSet<BYTE> &b) {
+const Block* BlockChain::newBlockFromRawRLP(RLPByteSet<BYTE> &b) {
     //b = b.parse();         //Removes the top brackets
     auto block = make_unique<Block>();
     block->parse(b);
@@ -31,7 +31,7 @@ IComponent* Block::newChild(uint creation_index) {
     }
 }
 
-void Block::parse(ByteSet<BYTE> &b) {
+void Block::parse(RLPByteSet<BYTE> &b) {
     VectorNode::parse(b);
     if(auto h = getHeader(); h)
         if(auto f = h->get<ByteSet<BYTE>>(8); f)
@@ -52,10 +52,10 @@ IComponent* BlockAccessList::newChild(uint creation_index) {
     }
 }
 
-void BlockTransaction::parse(ByteSet<BYTE> &b) {
+void BlockTransaction::parse(RLPByteSet<BYTE> &b) {
     if(!b.hasRLPListHeader()) {
         b.pop_brackets();
-        setTyped(b.pop_front_rlp().asInteger());
+        setTyped(b.pop_front_elem());
     }
     IComposite::parse(b);
     //IComposite::print();
@@ -68,8 +68,8 @@ const ByteSet<BYTE> BlockTransaction::getValue() const {
     return result;
 }
 
-const ByteSet<BYTE> BlockTransaction::serialize() const {
-    ByteSet<BYTE> result =  IComposite::serialize();
+const RLPByteSet<BYTE> BlockTransaction::serialize() const {
+    RLPByteSet<BYTE> result =  IComposite::serialize();
     if(getTyped()) {
         result.push_front_elem(getTyped());
         result = result.serialize();

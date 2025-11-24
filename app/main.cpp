@@ -1,4 +1,4 @@
-#include "ByteSet/ByteSetFormat.h"
+#include "ByteSet/ByteSet.h"
 #include <EthStructures/EthComposite.h>
 //#include <ByteSet/TrieNode.h>
 #include <curl/curl.h>
@@ -6,14 +6,19 @@
 
 int main(int argc, char *argv[])
 {
-    BlockTransactions Txs;
+    RLPByteSet<BYTE> rlp;
+    
+    rlp.push_back_rlp(ByteSet<BYTE>(0x20));
+    rlp.push_back_rlp(ByteSet<BYTE>(0x02F8AAAAAA));
+
+    /*BlockTransactions Txs;
     const BlockTransaction* Tx1 = new BlockTransaction();
     const BlockTransaction* Tx2 = new BlockTransaction();
     ByteSet<NIBBLE> key1(0x01, 2);
     ByteSet<NIBBLE> key2(0x02, 2);
 
     Txs.store(key1, Tx1);
-    Txs.store(key2, Tx2);
+    Txs.store(key2, Tx2);*/
     /*ByteSet<BYTE> empty;
     cout << empty.RLPSerialize(false).keccak256().asString() << endl;
     cout << empty.RLPSerialize(true).keccak256().asString() << endl;
