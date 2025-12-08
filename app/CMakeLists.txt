@@ -10,4 +10,4 @@ target_include_directories(
 )
 
 #target_link_libraries(EthStructuresApp PUBLIC libEthStructures)
-target_link_libraries(EthStructuresApp PUBLIC libEthStructures PRIVATE nlohmann_json::nlohmann_json libcurl)    #for testing purpose
+target_link_libraries(EthStructuresApp PUBLIC libEthStructures PRIVATE nlohmann_json::nlohmann_json libcurl evmc::evmc)    #for testing purpose
