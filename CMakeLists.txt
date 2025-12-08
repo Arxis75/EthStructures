@@ -21,7 +21,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 add_subdirectory(cmake)
 add_subdirectory(ByteSet)
 
-add_subdirectory(evmc)
 add_subdirectory(evmone)
 
 add_subdirectory(src)
