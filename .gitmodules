@@ -1,3 +1,6 @@
 [submodule "ByteSet"]
 	path = ByteSet
 	url = https://github.com/Arxis75/ByteSet.git
+[submodule "evmone"]
+	path = evmone
+	url = https://github.com/ipsilon/evmone.git
