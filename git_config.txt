@@ -1,0 +1,24 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = https://github.com/Arxis75/EthStructures.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+	vscode-merge-base = origin/master
+[submodule "ByteSet"]
+	url = https://github.com/Arxis75/ByteSet.git
+	active = true
+[submodule "evmc"]
+	url = https://github.com/ethereum/evmc.git
+	active = true
+[submodule "evmone"]
+	url = https://github.com/ethereum/evmone.git
+	active = true
+[submodule "intx"]
+	url = https://github.com/chfast/intx.git
+	active = true
