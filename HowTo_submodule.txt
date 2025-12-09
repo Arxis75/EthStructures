@@ -1,0 +1,4 @@
+git submodule add https://github.com/Arxis75/ByteSet.git
+git submodule update --init --recursive
+
+git submodule update --remote --merge

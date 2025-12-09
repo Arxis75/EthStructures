@@ -1,0 +1,33 @@
+cmake_minimum_required(VERSION 3.16)
+
+add_subdirectory(evmone)
+
+project(EthStructures VERSION 1.0 LANGUAGES C CXX)
+
+option(BUILD_AS_LIBRARY "Build EthStructures as a library instead of an executable" OFF)
+option(BUILD_TESTING "Build unit tests" ON)
+
+# Flags must be defined AFTER the project declaration
+set(CMAKE_CXX_STANDARD 20)  # 11 => 17 to allow omitting '<>' when instanciating a template class with the default parameter
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Og -Wall")
+
+# first we can indicate the documentation build as an option and set it to ON by default
+option(BUILD_DOC "Build documentation" ON)
+
+# Where custom modules live
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
+add_subdirectory(cmake)
+add_subdirectory(ByteSet)
+add_subdirectory(src)
+
+if(NOT BUILD_AS_LIBRARY)
+    add_subdirectory(app)
+endif()
+
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
